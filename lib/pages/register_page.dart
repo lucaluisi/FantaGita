@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../custom components/square_tile.dart';
+import '../services/auth_service.dart';
+
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
   const RegisterPage({Key? key, required this.showLoginPage}) : super(key: key);
@@ -159,6 +162,24 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     const SizedBox(height: 80),
 
+                    //google + apple sign in buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+
+                        SquareTile(
+                            onTap: ()=>AuthService().singInWhithGoogle(),
+                            immagePath: 'assets/immages/google.png'
+                        ),
+
+                        SizedBox(width: 25),
+
+                        SquareTile(
+                            onTap: (){},
+                            immagePath: 'lib/immages/apple.png'),
+                      ],
+                    ),
+                    const SizedBox(height: 80),
                     // login
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
