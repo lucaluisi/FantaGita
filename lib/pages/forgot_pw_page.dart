@@ -29,7 +29,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
-          fontSize: 16.0);
+          fontSize: 16.0
+      );
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       showDialog(

@@ -12,7 +12,12 @@
           "package_name": "com.example.fantagita"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "437834327954-pd4kds48qpor9quss16704f4lgeglngc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCKi1UdWKJtmgTPjbWHqfe7tnLRsob52tE"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437834327954-pd4kds48qpor9quss16704f4lgeglngc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "437834327954-j5e6a4gmagfpmcic127nhslkeeq9pm8h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fantagita"
+              }
+            }
+          ]
         }
       }
     }
