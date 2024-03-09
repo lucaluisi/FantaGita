@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "437834327954",
+    "project_id": "fantagita-75417",
+    "storage_bucket": "fantagita-75417.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437834327954:android:1bdf03b100ae54cfd4434b",
+        "android_client_info": {
+          "package_name": "com.example.fantagita"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKi1UdWKJtmgTPjbWHqfe7tnLRsob52tE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
