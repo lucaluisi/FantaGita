@@ -1,6 +1,8 @@
+import 'package:fantagita/custom%20components/square_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../services/auth_service.dart';
 import 'forgot_pw_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -196,6 +198,26 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                    ),
+
+                    const SizedBox(height: 80),
+
+                    //google + apple sign in buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+
+                        SquareTile(
+                            onTap: ()=>AuthService().singInWhithGoogle(),
+                            immagePath: 'assets/immages/google.png'
+                    ),
+
+                        SizedBox(width: 25),
+
+                        SquareTile(
+                            onTap: (){},
+                            immagePath: 'lib/immages/apple.png'),
+                      ],
                     ),
 
                     const SizedBox(height: 80),
