@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final user = FirebaseAuth.instance.currentUser!;
+  User? user;
+
+  void _getUser() {
+    try {
+      user = FirebaseAuth.instance.currentUser;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    _getUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +35,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('signed in: ${user.email!}'),
+          Text('signed in: ${user?.displayName}'),
           const SizedBox(height: 25),
           CupertinoButton(
               onPressed: () {

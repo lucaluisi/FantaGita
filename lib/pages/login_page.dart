@@ -2,10 +2,9 @@ import 'package:fantagita/custom%20components/text_button.dart';
 import 'package:fantagita/custom%20components/text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../custom components/icon_button.dart';
-import '../services/auth_service.dart';
 import 'forgot_pw_page.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -129,14 +128,14 @@ class _LoginPageState extends State<LoginPage> {
                       label: "Entri",
                     ),
 
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 80),
 
                     // google + apple sign in buttons
-                    Row(
+                    /*Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomIconButton(
-                          onPressed: () => AuthService().singInWhithGoogle(),
+                          onPressed: signInWithGoogle,
                           icon: 'assets/images/google.png',
                           color: Colors.grey[200],
                           iconHeight: 40,
@@ -149,9 +148,9 @@ class _LoginPageState extends State<LoginPage> {
                           iconHeight: 40,
                         ),
                       ],
-                    ),
+                    ),*/
 
-                    const SizedBox(height: 30),
+                    // const SizedBox(height: 30),
 
                     // register
                     Row(
