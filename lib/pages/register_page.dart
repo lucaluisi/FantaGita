@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../custom components/icon_button.dart';
 import '../custom components/text_button.dart';
 import '../custom components/text_field.dart';
-import '../services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -16,6 +14,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   // Text controller
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -24,12 +23,19 @@ class _RegisterPageState extends State<RegisterPage> {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.updateDisplayName(_usernameController.text.trim());
+        await user.reload();
+        print(user.displayName);
+      }
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {}
   }
 
   @override
   void dispose() {
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -68,6 +74,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   const SizedBox(height: 50),
 
+                  // username textfield
+                  CustomTextField(
+                    controller: _usernameController,
+                    hintText: "Username",
+                  ),
+
+                  const SizedBox(height: 30),
+
                   // email textfield
                   CustomTextField(
                     controller: _emailController,
@@ -91,14 +105,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     label: "Registriti",
                   ),
 
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 80),
 
                   //google + apple sign in buttons
-                  Row(
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomIconButton(
-                        onPressed: () => AuthService().singInWhithGoogle(),
+                        onPressed: signInWithGoogle,
                         icon: 'assets/images/google.png',
                         color: Colors.grey[200],
                         iconHeight: 40,
@@ -111,9 +125,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         iconHeight: 40,
                       ),
                     ],
-                  ),
+                  ),*/
 
-                  const SizedBox(height: 30),
+                  // const SizedBox(height: 30),
+
                   // login
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
