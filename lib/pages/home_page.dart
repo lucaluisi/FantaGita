@@ -3,29 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final User? user;
+  const HomePage({super.key, required this.user});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  User? user;
-
-  void _getUser() {
-    try {
-      user = FirebaseAuth.instance.currentUser;
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  @override
-  void initState() {
-    _getUser();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +18,12 @@ class _HomePageState extends State<HomePage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('signed in: ${user?.displayName}'),
+          Text('signed in: ${widget.user?.displayName}'),
           const SizedBox(height: 25),
           CupertinoButton(
               onPressed: () {
                 FirebaseAuth.instance.signOut();
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
               color: Colors.deepPurple[300],
               child: const Text('log out'),

@@ -1,8 +1,10 @@
+import 'package:fantagita/Auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../custom components/text_button.dart';
 import '../custom components/text_field.dart';
+import 'home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -20,17 +22,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future signUp() async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        await user.updateDisplayName(_usernameController.text.trim());
-        await user.reload();
-        print(user.displayName);
-      }
-      Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {}
+      await Authentication().signUp(_usernameController.text,
+          _emailController.text, _passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -56,59 +52,59 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 50),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 50),
 
-                  const Image(image: AssetImage("assets/images/title.png")),
+                    const Image(image: AssetImage("assets/images/title.png")),
 
-                  const SizedBox(height: 40),
+                    const SizedBox(height: 40),
 
-                  const Text(
-                    'Registriti',
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.white,
+                    const Text(
+                      'Registriti',
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
 
-                  const SizedBox(height: 50),
+                    const SizedBox(height: 50),
 
-                  // username textfield
-                  CustomTextField(
-                    controller: _usernameController,
-                    hintText: "Username",
-                  ),
+                    // username textfield
+                    CustomTextField(
+                      controller: _usernameController,
+                      hintText: "Username",
+                    ),
 
-                  const SizedBox(height: 30),
+                    const SizedBox(height: 30),
 
-                  // email textfield
-                  CustomTextField(
-                    controller: _emailController,
-                    hintText: "Email",
-                  ),
+                    // email textfield
+                    CustomTextField(
+                      controller: _emailController,
+                      hintText: "Email",
+                    ),
 
-                  const SizedBox(height: 30),
+                    const SizedBox(height: 30),
 
-                  // password textfield
-                  CustomTextField(
-                    controller: _passwordController,
-                    hintText: "Password",
-                    obscureText: true,
-                  ),
+                    // password textfield
+                    CustomTextField(
+                      controller: _passwordController,
+                      hintText: "Password",
+                      obscureText: true,
+                    ),
 
-                  const SizedBox(height: 30),
+                    const SizedBox(height: 30),
 
-                  // sign up button
-                  CustomTextButton(
-                    onPressed: signUp,
-                    label: "Registriti",
-                  ),
+                    // sign up button
+                    CustomTextButton(
+                      onPressed: signUp,
+                      label: "Registriti",
+                    ),
 
-                  const SizedBox(height: 80),
+                    const SizedBox(height: 80),
 
-                  //google + apple sign in buttons
-                  /*Row(
+                    //google + apple sign in buttons
+                    /*Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomIconButton(
@@ -127,29 +123,28 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),*/
 
-                  // const SizedBox(height: 30),
+                    // const SizedBox(height: 30),
 
-                  // login
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Ti hai già registreto? ',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      GestureDetector(
-                        onTap: widget.showLoginPage,
-                        child: const Text(
-                          'Entri!',
-                          style: TextStyle(
-                              color: Color(0xff943846),
-                              fontWeight: FontWeight.bold),
+                    // login
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Ti hai già registreto? ',
+                          style: TextStyle(color: Colors.white),
                         ),
-                      ),
-                    ],
-                  ),
-                ]
-              ),
+                        GestureDetector(
+                          onTap: widget.showLoginPage,
+                          child: const Text(
+                            'Entri!',
+                            style: TextStyle(
+                                color: Color(0xff943846),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]),
             ),
           ),
         ),

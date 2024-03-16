@@ -1,10 +1,9 @@
+import 'package:fantagita/Auth/auth_service.dart';
 import 'package:fantagita/custom%20components/text_button.dart';
 import 'package:fantagita/custom%20components/text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'forgot_pw_page.dart';
-
-
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -21,11 +20,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Future signIn() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-      Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {}
+      await Authentication()
+          .signIn(_emailController.text, _passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
   }
 
   @override
