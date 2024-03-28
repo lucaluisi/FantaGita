@@ -1,9 +1,9 @@
 import 'package:fantagita/Auth/auth_service.dart';
-import 'package:fantagita/custom%20components/text_button.dart';
+import 'package:fantagita/custom%20components/button.dart';
 import 'package:fantagita/custom%20components/text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'forgot_pw_page.dart';
+import './forgot_pw_page.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await Authentication()
           .signIn(_emailController.text, _passwordController.text);
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       print(e);
     }
@@ -122,9 +123,16 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 30),
 
                     // sign in button
-                    CustomTextButton(
+                    CustomButton(
                       onPressed: signIn,
-                      label: "Entri",
+                      child: const Text(
+                        "Entri",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
 
                     const SizedBox(height: 80),

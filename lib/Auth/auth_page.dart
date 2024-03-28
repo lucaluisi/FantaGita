@@ -1,5 +1,5 @@
-import 'package:fantagita/pages/login_page.dart';
-import 'package:fantagita/pages/register_page.dart';
+import 'package:fantagita/Auth/login_page.dart';
+import 'package:fantagita/Auth/register_page.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {

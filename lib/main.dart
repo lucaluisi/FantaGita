@@ -1,4 +1,4 @@
-import 'package:fantagita/Auth/main_page.dart';
+import 'package:fantagita/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'firebase_options.dart' show DefaultFirebaseOptions;

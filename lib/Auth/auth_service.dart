@@ -1,4 +1,3 @@
-import 'package:fantagita/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Authentication {

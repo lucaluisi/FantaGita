@@ -2,9 +2,8 @@ import 'package:fantagita/Auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../custom components/text_button.dart';
+import '../custom components/button.dart';
 import '../custom components/text_field.dart';
-import 'home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -24,6 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       await Authentication().signUp(_usernameController.text,
           _emailController.text, _passwordController.text);
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       print(e);
     }
@@ -96,9 +96,16 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 30),
 
                     // sign up button
-                    CustomTextButton(
+                    CustomButton(
                       onPressed: signUp,
-                      label: "Registriti",
+                      child: const Text(
+                        "Registriti",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
 
                     const SizedBox(height: 80),
