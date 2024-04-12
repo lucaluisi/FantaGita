@@ -1,4 +1,5 @@
 import 'package:fantagita/custom%20components/container_card.dart';
+import 'package:fantagita/pages/info_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,9 @@ class _AccountCardState extends State<AccountCard> {
     print("ciao");
   }
 
+  Future _infoApp() async {
+    Navigator.push(context, MaterialPageRoute<void>(builder: (context) => info_page()));
+  }
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -179,7 +183,7 @@ class _AccountCardState extends State<AccountCard> {
                                   fontSize: 15,
                                 ),
                               ),
-                              onPressed: _shareApp,
+                              onPressed: _infoApp,
                               style: ButtonStyle(
                                   fixedSize: MaterialStateProperty.all<Size?>(
                                       const Size(double.maxFinite, 50)),
