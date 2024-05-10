@@ -20,7 +20,6 @@ class _MainPageState extends State<MainPage> {
           return HomePage(user: snapshot.data);
         } else {
           return Scaffold(
-            backgroundColor: const Color(0xff303030),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(

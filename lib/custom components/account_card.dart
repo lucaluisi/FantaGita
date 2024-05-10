@@ -29,6 +29,7 @@ class _AccountCardState extends State<AccountCard> {
   Future _infoApp() async {
     Navigator.push(context, MaterialPageRoute<void>(builder: (context) => info_page()));
   }
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -44,7 +45,7 @@ class _AccountCardState extends State<AccountCard> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomContainerCard(
-                  color: Colors.grey[800],
+                  color: Theme.of(context).colorScheme.background,
                   padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 2),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,

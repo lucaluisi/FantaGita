@@ -26,8 +26,6 @@ class _HomePageState extends State<HomePage> {
           width: 230.0,
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xff303030),
-        surfaceTintColor: const Color(0xff303030),
         toolbarHeight: 70,
         actions: [
           Padding(
@@ -35,7 +33,6 @@ class _HomePageState extends State<HomePage> {
               child: AccountCard(user: widget.user)),
         ],
       ),
-      backgroundColor: const Color(0xff303030),
       body: SafeArea(
         child: Center(
             child: SingleChildScrollView(
