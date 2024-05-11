@@ -96,9 +96,10 @@ class _HomePageState extends State<HomePage> {
                       const Text(
                         "Entra in una partita",
                         style: TextStyle(
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
-                            height: 1.1),
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          height: 1.1,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 20),

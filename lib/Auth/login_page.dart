@@ -1,4 +1,4 @@
-import 'package:fantagita/Auth/auth_service.dart';
+import 'package:fantagita/services/auth_service.dart';
 import 'package:fantagita/custom%20components/button.dart';
 import 'package:fantagita/custom%20components/text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,11 +39,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff943846),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         foregroundColor: Colors.white,
         elevation: 0,
       ),
-      backgroundColor: const Color(0xff303030),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

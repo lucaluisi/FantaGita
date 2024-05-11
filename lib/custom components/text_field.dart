@@ -40,10 +40,11 @@ class CustomTextField extends StatelessWidget {
             controller: controller,
             obscureText: obscureText,
             cursorColor: cursorColor,
-            style: TextStyle(fontSize: fontSize),
+            style: TextStyle(fontSize: fontSize, color: Colors.black),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
+              hintStyle: const TextStyle(color: Colors.black)
             ),
           ),
         ),
