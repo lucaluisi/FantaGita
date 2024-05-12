@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AccountCard extends StatefulWidget {
-  User? user;
+  final User? user;
 
   AccountCard({
     super.key,
