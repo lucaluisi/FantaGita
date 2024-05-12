@@ -1,9 +1,7 @@
 import 'package:fantagita/custom%20components/button.dart';
 import 'package:fantagita/custom%20components/text_field.dart';
-import 'package:fantagita/services/auth_service.dart';
 import 'package:fantagita/services/database_service.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 class CreateMatchPage extends StatefulWidget {
   const CreateMatchPage({super.key});
@@ -83,14 +81,9 @@ class _CreateMatchPageState extends State<CreateMatchPage> {
             onTap: _selectEndDate,
           ),
           CustomButton(
-            onPressed: () {Database().write({
-              const Uuid().v4(): {
-                "startDate": _startDateController.text,
-                "endDate": _endDateController.text,
-                "admin": Authentication().user?.uid,
-                "name": _nomeGitaController.text,
-              }
-            });},
+            onPressed: () {
+              Database().createMatch(_nomeGitaController.text, _startDateController.text, _endDateController.text);
+            },
             child: const Text(
               "Crea",
               style: TextStyle(

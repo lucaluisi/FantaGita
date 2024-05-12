@@ -1,7 +1,6 @@
 import 'package:fantagita/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 import '../custom components/button.dart';
 import '../custom components/text_field.dart';
@@ -24,6 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       await Authentication().signUp(_usernameController.text,
           _emailController.text, _passwordController.text);
+
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       print(e);

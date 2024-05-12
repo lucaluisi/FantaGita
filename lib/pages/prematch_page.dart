@@ -1,4 +1,4 @@
-import 'package:fantagita/create_match/create_match_page.dart';
+import 'package:fantagita/match/create_match_page.dart';
 import 'package:fantagita/custom%20components/account_card.dart';
 import 'package:fantagita/custom%20components/button.dart';
 import 'package:fantagita/custom%20components/container_card.dart';
@@ -6,15 +6,15 @@ import 'package:fantagita/custom%20components/text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class PrematchPage extends StatefulWidget {
   final User? user;
-  const HomePage({super.key, required this.user});
+  const PrematchPage({super.key, required this.user});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<PrematchPage> createState() => _PrematchPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PrematchPageState extends State<PrematchPage> {
   final _entryCodeController = TextEditingController();
 
   @override

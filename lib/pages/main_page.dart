@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fantagita/Auth/auth_page.dart';
-import 'package:fantagita/pages/home_page.dart';
+import 'package:fantagita/match/match_page.dart';
+import 'package:fantagita/pages/prematch_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +19,14 @@ class _MainPageState extends State<MainPage> {
       stream: FirebaseAuth.instance.userChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data?.displayName != null) {
-          return HomePage(user: snapshot.data);
+          return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              stream: FirebaseFirestore.instance.collection("users").doc(snapshot.data?.email).snapshots(),
+              builder: (context, snapshotMatch) {
+                if (snapshotMatch.hasData && snapshotMatch.data?.data()?["match"] != null) {
+                  return MatchPage(user: snapshot.data);
+                }
+                return PrematchPage(user: snapshot.data);
+              });
         } else {
           return Scaffold(
             body: Padding(
