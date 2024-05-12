@@ -20,7 +20,7 @@ class _MainPageState extends State<MainPage> {
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data?.displayName != null) {
           return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance.collection("users").doc(snapshot.data?.email).snapshots(),
+              stream: FirebaseFirestore.instance.collection("users").doc(snapshot.data?.uid).snapshots(),
               builder: (context, snapshotMatch) {
                 if (snapshotMatch.hasData && snapshotMatch.data?.data()?["match"] != null) {
                   return MatchPage(user: snapshot.data);

@@ -7,7 +7,7 @@ import '../custom components/text_field.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
-  const RegisterPage({Key? key, required this.showLoginPage}) : super(key: key);
+  const RegisterPage({super.key, required this.showLoginPage});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -46,7 +46,6 @@ class _RegisterPageState extends State<RegisterPage> {
         foregroundColor: Colors.white,
         elevation: 0,
       ),
-      backgroundColor: const Color(0xff303030),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

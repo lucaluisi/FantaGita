@@ -27,7 +27,7 @@ class _AccountCardState extends State<AccountCard> {
   }
 
   Future _infoApp() async {
-    Navigator.push(context, MaterialPageRoute<void>(builder: (context) => info_page()));
+    Navigator.push(context, MaterialPageRoute<void>(builder: (context) => const info_page()));
   }
 
   @override

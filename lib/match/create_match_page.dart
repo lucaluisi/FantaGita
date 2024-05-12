@@ -16,30 +16,30 @@ class _CreateMatchPageState extends State<CreateMatchPage> {
   final _endDateController = TextEditingController();
 
   Future<void> _selectStartDate() async {
-    DateTime? _picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(DateTime.now().year + 1));
 
-    if (_picked != null) {
+    if (picked != null) {
       setState(() {
-        _startDateController.text = _picked.toString().split(" ")[0];
-        _endDateController.text = _picked.toString().split(" ")[0];
+        _startDateController.text = picked.toString().split(" ")[0];
+        _endDateController.text = picked.toString().split(" ")[0];
       });
     }
   }
 
   Future<void> _selectEndDate() async {
-    DateTime? _picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.tryParse(_startDateController.text) as DateTime,
         firstDate: DateTime.tryParse(_startDateController.text) as DateTime,
         lastDate: DateTime(DateTime.now().year + 1));
 
-    if (_picked != null) {
+    if (picked != null) {
       setState(() {
-        _endDateController.text = _picked.toString().split(" ")[0];
+        _endDateController.text = picked.toString().split(" ")[0];
       });
     }
   }
@@ -83,6 +83,7 @@ class _CreateMatchPageState extends State<CreateMatchPage> {
           CustomButton(
             onPressed: () {
               Database().createMatch(_nomeGitaController.text, _startDateController.text, _endDateController.text);
+              Navigator.pop(context);
             },
             child: const Text(
               "Crea",

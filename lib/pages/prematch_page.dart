@@ -3,6 +3,7 @@ import 'package:fantagita/custom%20components/account_card.dart';
 import 'package:fantagita/custom%20components/button.dart';
 import 'package:fantagita/custom%20components/container_card.dart';
 import 'package:fantagita/custom%20components/text_field.dart';
+import 'package:fantagita/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -58,7 +59,7 @@ class _PrematchPageState extends State<PrematchPage> {
                         ),
                         const SizedBox(height: 20),
                         CustomButton(
-                            color: Colors.grey[300],
+                            color: Theme.of(context).colorScheme.onPrimary,
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -89,7 +90,7 @@ class _PrematchPageState extends State<PrematchPage> {
                 ),
                 const SizedBox(height: 40),
                 CustomContainerCard(
-                  color: Colors.grey[600],
+                  color: Theme.of(context).colorScheme.onInverseSurface,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -109,7 +110,7 @@ class _PrematchPageState extends State<PrematchPage> {
                       ),
                       const SizedBox(height: 20),
                       CustomButton(
-                        onPressed: () {},
+                        onPressed: () => Database().enterMatch(_entryCodeController.text),
                         child: const Icon(
                           Icons.arrow_right_alt_rounded,
                           color: Colors.white,
