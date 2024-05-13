@@ -59,6 +59,11 @@ class Database {
     return user["name"];
   }
 
+  Future<String> getMatchCode() async {
+    DocumentSnapshot user = await FirebaseFirestore.instance.collection("users").doc(Authentication().user?.uid).get();
+    return user["match"];
+  }
+
   Future<Map<String, int>> getUsersInMatchList(User? user) async {
     DocumentSnapshot userDetails = await FirebaseFirestore.instance
         .collection("users")
@@ -76,7 +81,7 @@ class Database {
     }
 
     List<MapEntry<String, int>> entries = data.entries.toList();
-    entries.sort((a, b) => a.value.compareTo(b.value));
+    entries.sort((a, b) => b.value.compareTo(a.value));
     Map<String, int> sortedMap = LinkedHashMap.fromEntries(entries);
 
     return sortedMap;

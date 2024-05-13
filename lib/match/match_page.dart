@@ -1,7 +1,9 @@
 import 'package:fantagita/custom%20components/account_card.dart';
 import 'package:fantagita/custom%20components/button.dart';
+import 'package:fantagita/custom%20components/container_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../services/database_service.dart';
 
@@ -62,10 +64,10 @@ class _MatchPageState extends State<MatchPage> {
     return CustomButton(
       onPressed: () {},
       color: Theme.of(context).colorScheme.onInverseSurface,
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
       child: Table(
         children: texts,
-        columnWidths: {0: FixedColumnWidth(50), 2: FixedColumnWidth(50)},
+        columnWidths: const {0: FixedColumnWidth(50), 2: FixedColumnWidth(50)},
         textBaseline: TextBaseline.ideographic,
       ),
     );
@@ -77,42 +79,61 @@ class _MatchPageState extends State<MatchPage> {
       appBar: AppBar(
         title: const Image(
           image: AssetImage("assets/images/title.png"),
-          width: 230.0,
+          width: 220.0,
         ),
         centerTitle: true,
         toolbarHeight: 70,
         actions: [
           Padding(
-              padding: const EdgeInsets.only(right: 10.0),
+              padding: const EdgeInsets.only(right: 20.0),
               child: AccountCard(user: widget.user)),
         ],
       ),
       body: SafeArea(
-        child: Center(
-            child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FutureBuilder(
-                  future: Database().getUsersInMatchList(widget.user),
-                  builder: (context, AsyncSnapshot<Map<String, int>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else {
-                      return _buildWidgetList(snapshot.data!);
-                    }
-                  },
-                ),
-                SizedBox(height: 100),
-                OutlinedButton(onPressed: () {setState(() {});}, child: const Text("refresh"))
-              ],
+        child: SingleChildScrollView(
+                  child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomContainerCard(
+              color: Theme.of(context).colorScheme.inversePrimary,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Non puoi giocare da solo!\nManda il codice a qualcuno", style: TextStyle(fontSize: 16),),
+                  CustomButton(
+                      onPressed: () async {
+                        Share.share(await Database().getMatchCode());
+                      },
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      child: const Icon(Icons.share_outlined))
+                ],
+              ),
             ),
-          ),
-        )),
+            const SizedBox(height: 10),
+            FutureBuilder(
+              future: Database().getUsersInMatchList(widget.user),
+              builder: (context, AsyncSnapshot<Map<String, int>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  return _buildWidgetList(snapshot.data!);
+                }
+              },
+            ),
+            const SizedBox(height: 100),
+            OutlinedButton(
+                onPressed: () {
+                  setState(() {});
+                },
+                child: const Text("refresh"))
+          ],
+        ),
+                  ),
+                ),
       ),
     );
   }
