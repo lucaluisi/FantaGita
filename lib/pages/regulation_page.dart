@@ -1,12 +1,6 @@
 import 'dart:async';
-import 'dart:ffi';
-
-import 'package:fantagita/custom%20components/account_card.dart';
 import 'package:fantagita/custom%20components/button.dart';
-import 'package:fantagita/custom%20components/container_card.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../services/database_service.dart';
 
