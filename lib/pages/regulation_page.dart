@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:fantagita/custom%20components/button.dart';
 import 'package:flutter/material.dart';
 
-import '../services/database_service.dart';
 
 class RegulationPage extends StatefulWidget {
   const RegulationPage({super.key});
