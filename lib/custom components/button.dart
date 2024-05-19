@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   final Widget child;
   final Color? color;
+  final Border? border;
   final EdgeInsets padding;
   final VoidCallback onPressed;
 
@@ -11,6 +13,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     required this.child,
     this.color = const Color(0xff943846),
+    this.border = const Border(),
     this.padding = const EdgeInsets.all(20),
   });
 

@@ -64,6 +64,7 @@ class _CreateMatchPageState extends State<CreateMatchPage> {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue)),
             ),
+            style: const TextStyle(color: Colors.white),
             readOnly: true,
             onTap: _selectStartDate,
           ),
@@ -77,6 +78,7 @@ class _CreateMatchPageState extends State<CreateMatchPage> {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue)),
             ),
+            style: const TextStyle(color: Colors.white),
             readOnly: true,
             onTap: _selectEndDate,
           ),

@@ -1,3 +1,5 @@
+import 'package:fantagita/custom%20components/button.dart';
+import 'package:fantagita/custom%20components/text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -29,8 +31,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       showDialog(
@@ -63,62 +64,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ),
             ),
             const SizedBox(height: 70),
-            ClipPath(
-              clipper: const ShapeBorderClipper(
-                shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 10.5),
-                  child: TextField(
-                    controller: _emailController,
-                    cursorColor: const Color(0xff943846),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Email',
-                    ),
-                  ),
-                ),
-              ),
+            CustomTextField(
+              controller: _emailController,
+              hintText: "Email",
             ),
             const SizedBox(height: 30),
-            ClipPath(
-              clipper: const ShapeBorderClipper(
-                shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
+            CustomButton(
+                onPressed: forgotPwSendEmail,
+                child: const Text(
+                  "Invia la meil",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
                   ),
-                ),
-              ),
-              child: GestureDetector(
-                onTap: forgotPwSendEmail,
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: const Color(0xff943846),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Invia la meil",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+                )),
           ],
         ),
       ),

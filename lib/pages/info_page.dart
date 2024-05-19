@@ -3,8 +3,8 @@ import 'package:fantagita/custom%20components/container_card.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class info_page extends StatelessWidget {
-  const info_page({super.key});
+class InfoPage extends StatelessWidget {
+  const InfoPage({super.key});
 
   _launchInstagram(var nativeUrl, var webUrl) async {
     try {

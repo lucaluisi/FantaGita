@@ -7,73 +7,118 @@ import 'package:uuid/uuid.dart';
 import 'auth_service.dart';
 
 class Database {
+  late User? user;
+  late Stream<DocumentSnapshot> userDetails;
+  final instance = FirebaseFirestore.instance;
+
+  Database() {
+    final auth = Authentication();
+    user = auth.user;
+    userDetails = instance.collection("users").doc(user?.uid).snapshots();
+  }
+
   Future<void> saveUser(User? user) async {
-    await FirebaseFirestore.instance.collection("users").doc(user?.uid).set({
+    await instance.collection("users").doc(user?.uid).set({
       "email": user?.email,
       "name": user?.displayName,
       "profilepic": user?.photoURL,
       "uid": user?.uid,
       "match": null,
+      "admin": false,
     });
   }
 
-  Future<void> addUserData(User? user, data) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user?.uid)
-        .update(data);
+  Future<void> addUserData(data) async {
+    await instance.collection("users").doc(user?.uid).update(data);
   }
 
   Future<void> createMatch(
       String name, String startDate, String endDate) async {
     String matchUuid = const Uuid().v4();
-    Database().addUserData(Authentication().user, {
+    addUserData({
       "match": matchUuid,
+      "admin": true,
     });
-    await FirebaseFirestore.instance.collection("matches").doc(matchUuid).set({
-      "admin": Authentication().user?.uid,
+    await instance.collection("matches").doc(matchUuid).set({
+      "admin": user?.uid,
       "name": name,
       "startDate": startDate,
       "endDate": endDate,
+      "started": false,
       "users": {},
     });
   }
 
-  Future<void> enterMatch(String code) async {
-    DocumentSnapshot match = await FirebaseFirestore.instance.collection("matches").doc(code).get();
+  Future<void> startMatch() async {
+    String matchCode = await getMatchCode();
+    DocumentSnapshot match =
+        await instance.collection("matches").doc(matchCode).get();
     if (match.exists) {
-      Database().addUserData(Authentication().user, {
+      await instance
+          .collection("matches")
+          .doc(matchCode)
+          .update({"started": true});
+    } else {
+      print("---------------- Errore: il match $matchCode non esiste");
+    }
+  }
+
+  Future<void> enterMatch(String code) async {
+    DocumentSnapshot match =
+        await instance.collection("matches").doc(code).get();
+    if (match.exists) {
+      addUserData({
         "match": code,
       });
       Map<String, dynamic> users = match['users'];
-      users[Authentication().user!.uid] = 0;
-      await FirebaseFirestore.instance.collection("matches").doc(code).update(
-          {"users": users});
+      users[user!.uid] = 0;
+      await instance.collection("matches").doc(code).update({"users": users});
     } else {
       print("---------------- Errore: il match $code non esiste");
     }
   }
 
+  Stream<bool> isStarted() async* {
+    DocumentSnapshot matchCode =
+        await instance.collection("users").doc(user?.uid).get();
+    yield* instance
+        .collection("matches")
+        .doc(matchCode['match'])
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists && snapshot.data() != null) {
+        var data = snapshot.data() as Map<String, dynamic>;
+        return data["started"] as bool? ?? false;
+      }
+      return false;
+    });
+  }
+
+  Stream<bool> isAdmin() async* {
+    yield* userDetails.map((snapshot) {
+      if (snapshot.exists && snapshot.data() != null) {
+        var data = snapshot.data() as Map<String, dynamic>;
+        return data["admin"] as bool? ?? false;
+      }
+      return false;
+    });
+  }
+
   Future<String> getUsername(String uid) async {
-    DocumentSnapshot user = await FirebaseFirestore.instance.collection("users").doc(uid).get();
+    DocumentSnapshot user = await instance.collection("users").doc(uid).get();
     return user["name"];
   }
 
   Future<String> getMatchCode() async {
-    DocumentSnapshot user = await FirebaseFirestore.instance.collection("users").doc(Authentication().user?.uid).get();
-    return user["match"];
+    DocumentSnapshot userDetails =
+        await instance.collection("users").doc(user?.uid).get();
+    return userDetails["match"];
   }
 
-  Future<Map<String, int>> getUsersInMatchList(User? user) async {
-    DocumentSnapshot userDetails = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user?.uid)
-        .get();
-    String matchUuid = userDetails["match"];
-    DocumentSnapshot match = await FirebaseFirestore.instance
-        .collection("matches")
-        .doc(matchUuid)
-        .get();
+  Future<Map<String, int>> getUsersInMatchList() async {
+    String matchCode = await getMatchCode();
+    DocumentSnapshot match =
+        await instance.collection("matches").doc(matchCode).get();
     Map<String, int> data = {};
     for (var entry in match['users'].entries) {
       String username = await getUsername(entry.key);
@@ -85,5 +130,10 @@ class Database {
     Map<String, int> sortedMap = LinkedHashMap.fromEntries(entries);
 
     return sortedMap;
+  }
+
+  Stream<DocumentSnapshot> getMatchSnapshots() async* {
+    String matchCode = await getMatchCode();
+    yield* instance.collection("matches").doc(matchCode).snapshots();
   }
 }

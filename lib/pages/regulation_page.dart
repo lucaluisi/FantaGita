@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:fantagita/custom%20components/button.dart';
 import 'package:flutter/material.dart';
 
-
 class RegulationPage extends StatefulWidget {
   const RegulationPage({super.key});
 
@@ -32,8 +31,8 @@ class _RegulationPageState extends State<RegulationPage> {
     "Arriva in ritardo": -15,
     "Fa arrabbiare il docente accompagnatore": -30,
     "Fa arrabbiare l'autista": -30,
-    "Qualcuno si perde": -50,
-    "Qualcuno viene arrestato": -300,
+    "Si perde": -50,
+    "Viene arrestato": -300,
     "Gioca al telefono per tutto il viaggio": -10,
     "Mette canzoni napoletane durante il viaggio": -15,
   };
@@ -43,134 +42,133 @@ class _RegulationPageState extends State<RegulationPage> {
     final buttonStream = ButtonStream();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Image(
-          image: AssetImage("assets/images/title.png"),
-          width: 220.0,
-        ),
-        centerTitle: true,
-        toolbarHeight: 70,
-      ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: ScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    CustomButton(
-                        onPressed: () {
-                          buttonStream.buttonPressed(1);
-                        },
-                        child: const Text(
-                          "Regole",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                    CustomButton(
-                        onPressed: () {
-                          buttonStream.buttonPressed(2);
-                        },
-                        child: const Text(
-                          "Bonus e malus",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                StreamBuilder<int>(
-                  stream: buttonStream.stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data == 1) {
-                      return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: regole.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              ListTile(
-                                leading: const Icon(Icons.radio_button_on),
-                                title: Flexible(
-                                  child: Text(
-                                    regole[index],
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                                thickness: 2,
-                              )
-                            ],
-                          );
-                        },
-                      );
-                    } else {
-                      return Column(
-                        children: [
-                          Text("Bonus", style: TextStyle(color: Colors.green, fontSize: 24),),
-                          ListView(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            children: bonus.entries.map((entry) {
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          physics: const ScrollPhysics(),
+          children: [
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CustomButton(
+                    onPressed: () {
+                      buttonStream.buttonPressed(1);
+                    },
+                    child: const Text(
+                      "Regole",
+                      style: TextStyle(color: Colors.white),
+                    )),
+                CustomButton(
+                    onPressed: () {
+                      buttonStream.buttonPressed(2);
+                    },
+                    child: const Text(
+                      "Bonus e malus",
+                      style: TextStyle(color: Colors.white),
+                    )),
+              ],
+            ),
+            const SizedBox(height: 30),
+            StreamBuilder<int>(
+              stream: buttonStream.stream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data == 2) {
+                  return Column(
+                    children: [
+                      const Text(
+                        "Bonus",
+                        style: TextStyle(color: Colors.green, fontSize: 24),
+                      ),
+                      ListView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: bonus.entries.map(
+                                (entry) {
                               return Column(
                                 children: [
                                   ListTile(
                                     leading: const Icon(Icons.radio_button_on),
-                                    title: Flexible(
-                                      child: Text(
-                                        entry.key,
-                                      ),
+                                    title: Text(
+                                      entry.key,
                                     ),
-                                    trailing: Text("+" + entry.value.toString(), style: TextStyle(fontSize: 16, color: Colors.green),),
+                                    trailing: Text(
+                                      "+${entry.value.toString()}",
+                                      style: const TextStyle(
+                                          fontSize: 16, color: Colors.green),
+                                    ),
                                   ),
                                   Divider(
-                                    color:
-                                    Theme.of(context).colorScheme.onBackground,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                     thickness: 2,
                                   )
                                 ],
                               );
                             },
                           ).toList()),
-                          const SizedBox(height: 20),
-                          const Text("Malus", style: TextStyle(color: Colors.red, fontSize: 24),),
-                          ListView(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              children: malus.entries.map((entry) {
-                                return Column(
-                                  children: [
-                                    ListTile(
-                                      leading: const Icon(Icons.radio_button_on),
-                                      title: Flexible(
-                                        child: Text(
-                                          entry.key,
-                                        ),
-                                      ),
-                                      trailing: Text(entry.value.toString(), style: TextStyle(fontSize: 16, color: Colors.red),),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Malus",
+                        style: TextStyle(color: Colors.red, fontSize: 24),
+                      ),
+                      ListView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: malus.entries.map(
+                                (entry) {
+                              return Column(
+                                children: [
+                                  ListTile(
+                                    leading: const Icon(Icons.radio_button_on),
+                                    title: Text(
+                                      entry.key,
                                     ),
-                                    Divider(
-                                      color:
-                                      Theme.of(context).colorScheme.onBackground,
-                                      thickness: 2,
-                                    )
-                                  ],
-                                );
-                              },
-                              ).toList()),
+                                    trailing: Text(
+                                      entry.value.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 16, color: Colors.red),
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                    thickness: 2,
+                                  )
+                                ],
+                              );
+                            },
+                          ).toList()),
+                    ],
+                  );
+                } else {
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: regole.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.radio_button_on),
+                            title: Text(
+                              regole[index],
+                            ),
+                          ),
+                          Divider(
+                            color: Theme.of(context).colorScheme.onBackground,
+                            thickness: 2,
+                          )
                         ],
                       );
-                    }
-                  },
-                ),
-              ],
+                    },
+                  );
+                }
+              },
             ),
-          ),
+          ],
         ),
       ),
     );

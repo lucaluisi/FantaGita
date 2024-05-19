@@ -100,6 +100,7 @@ class _PrematchPageState extends State<PrematchPage> {
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
                           height: 1.1,
+                          color: Colors.white
                         ),
                         textAlign: TextAlign.center,
                       ),

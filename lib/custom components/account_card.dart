@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class AccountCard extends StatefulWidget {
   final User? user;
 
-  AccountCard({
+  const AccountCard({
     super.key,
     required this.user,
   });
@@ -18,16 +18,12 @@ class AccountCard extends StatefulWidget {
 class _AccountCardState extends State<AccountCard> {
   final _overlayController = OverlayPortalController();
 
-  Future _removeAds() async {
-    print("ciao");
-  }
-
   Future _shareApp() async {
     print("ciao");
   }
 
   Future _infoApp() async {
-    Navigator.push(context, MaterialPageRoute<void>(builder: (context) => const info_page()));
+    Navigator.push(context, MaterialPageRoute<void>(builder: (context) => const InfoPage()));
   }
 
   @override
@@ -118,31 +114,6 @@ class _AccountCardState extends State<AccountCard> {
                       CustomContainerCard(
                         child: Column(
                           children: [
-                            TextButton.icon(
-                              icon: const Padding(
-                                padding: EdgeInsets.only(right: 10.0),
-                                child: Icon(
-                                  Icons.remove_circle_outline,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              label: const Text(
-                                "Rimuovi annunci",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              onPressed: _removeAds,
-                              style: ButtonStyle(
-                                  fixedSize: MaterialStateProperty.all<Size?>(
-                                      const Size(double.maxFinite, 50)),
-                                  alignment: Alignment.centerLeft,
-                                  overlayColor:
-                                      MaterialStateProperty.all<Color?>(
-                                          const Color(0x15ffffff))),
-                            ),
                             TextButton.icon(
                               icon: const Padding(
                                 padding: EdgeInsets.only(right: 10.0),

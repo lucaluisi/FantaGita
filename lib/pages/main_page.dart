@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fantagita/Auth/auth_page.dart';
 import 'package:fantagita/custom%20components/button.dart';
-import 'package:fantagita/match/match_page.dart';
 import 'package:fantagita/pages/prematch_page.dart';
 import 'package:fantagita/pages/regulation_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'navigator_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -29,7 +30,7 @@ class _MainPageState extends State<MainPage> {
               builder: (context, snapshotMatch) {
                 if (snapshotMatch.hasData &&
                     snapshotMatch.data?.data()?["match"] != null) {
-                  return MatchPage(user: snapshot.data);
+                  return NavigatorPage(user: snapshot.data);
                 }
                 return PrematchPage(user: snapshot.data);
               });
