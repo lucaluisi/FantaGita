@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fantagita/custom%20components/button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../services/database_service.dart';
@@ -15,7 +13,7 @@ class RankingPage extends StatefulWidget {
 class _RankingPageState extends State<RankingPage> {
   final database = Database();
 
-  List<Widget> _buildWidgetList(Map<String, int> data) {
+  List<Widget> _buildWidgetList(Map<String, Map<String, dynamic>> data) {
     List<Widget> texts = [];
     int pos = 1;
     data.forEach((key, value) {
@@ -42,7 +40,7 @@ class _RankingPageState extends State<RankingPage> {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
-                Text("$value pt",
+                Text("${value['pt']} pt",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 16,
@@ -83,7 +81,7 @@ class _RankingPageState extends State<RankingPage> {
               builder: (BuildContext context, AsyncSnapshot databaseSnapshot) {
                 return FutureBuilder(
                   future: database.getUsersInMatchList(),
-                  builder: (context, AsyncSnapshot<Map<String, int>> snapshot) {
+                  builder: (context, AsyncSnapshot<Map<String, Map<String, dynamic>>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {

@@ -14,12 +14,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final database = Database();
 
-  Widget _buildWidgetList(Map<String, int> data) {
+  Widget _buildWidgetList(Map<String, Map<String, dynamic>> data) {
     int endKey = 0;
     Map<String, int> subMap = {};
     data.forEach((key, value) {
       if (endKey < 5) {
-        subMap[key] = value;
+        subMap[key] = value['pt'];
         endKey++;
       }
     });
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
           FutureBuilder(
             future: database.getUsersInMatchList(),
             builder: (context,
-                AsyncSnapshot<Map<String, int>> snapshot) {
+                AsyncSnapshot<Map<String, Map<String, dynamic>>> snapshot) {
               if (snapshot.connectionState ==
                   ConnectionState.waiting) {
                 return const Center(

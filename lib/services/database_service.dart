@@ -8,13 +8,11 @@ import 'auth_service.dart';
 
 class Database {
   late User? user;
-  late Stream<DocumentSnapshot> userDetails;
   final instance = FirebaseFirestore.instance;
 
   Database() {
     final auth = Authentication();
     user = auth.user;
-    userDetails = instance.collection("users").doc(user?.uid).snapshots();
   }
 
   Future<void> saveUser(User? user) async {
@@ -44,7 +42,7 @@ class Database {
       "name": name,
       "startDate": startDate,
       "endDate": endDate,
-      "started": false,
+      "started": 0,
       "users": {},
     });
   }
@@ -57,7 +55,7 @@ class Database {
       await instance
           .collection("matches")
           .doc(matchCode)
-          .update({"started": true});
+          .update({"started": match["started"] + 1});
     } else {
       print("---------------- Errore: il match $matchCode non esiste");
     }
@@ -71,36 +69,36 @@ class Database {
         "match": code,
       });
       Map<String, dynamic> users = match['users'];
-      users[user!.uid] = 0;
+      users[user!.uid] = {"pt": 0, "squad": [], "price": 25};
       await instance.collection("matches").doc(code).update({"users": users});
     } else {
       print("---------------- Errore: il match $code non esiste");
     }
   }
 
-  Stream<bool> isStarted() async* {
-    DocumentSnapshot matchCode =
-        await instance.collection("users").doc(user?.uid).get();
+  Future<void> setSquad(List<String> squad) async {
+    DocumentSnapshot match = await getMatchData();
+    String matchCode = await getMatchCode();
+    Map<String, dynamic> users = match['users'];
+    users[user!.uid] = {"pt": 0, "squad": squad};
+    await instance
+        .collection("matches")
+        .doc(matchCode)
+        .update({"users": users});
+  }
+
+  Stream<int> isStarted() async* {
+    String matchCode = await getMatchCode();
     yield* instance
         .collection("matches")
-        .doc(matchCode['match'])
+        .doc(matchCode)
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists && snapshot.data() != null) {
         var data = snapshot.data() as Map<String, dynamic>;
-        return data["started"] as bool? ?? false;
+        return data["started"] as int? ?? 0;
       }
-      return false;
-    });
-  }
-
-  Stream<bool> isAdmin() async* {
-    yield* userDetails.map((snapshot) {
-      if (snapshot.exists && snapshot.data() != null) {
-        var data = snapshot.data() as Map<String, dynamic>;
-        return data["admin"] as bool? ?? false;
-      }
-      return false;
+      return 0;
     });
   }
 
@@ -110,30 +108,52 @@ class Database {
   }
 
   Future<String> getMatchCode() async {
-    DocumentSnapshot userDetails =
-        await instance.collection("users").doc(user?.uid).get();
+    DocumentSnapshot userDetails = await getUserData();
     return userDetails["match"];
   }
 
-  Future<Map<String, int>> getUsersInMatchList() async {
-    String matchCode = await getMatchCode();
-    DocumentSnapshot match =
-        await instance.collection("matches").doc(matchCode).get();
-    Map<String, int> data = {};
+  Future<Map<String, Map<String, dynamic>>> getUidsInMatchList() async {
+    DocumentSnapshot match = await getMatchData();
+    Map<String, Map<String, dynamic>> data = {};
     for (var entry in match['users'].entries) {
+      data[entry.key] = entry.value;
+    }
+    List<MapEntry<String, Map<String, dynamic>>> entries =
+        data.entries.toList();
+    entries.sort((a, b) => b.value["pt"].compareTo(a.value["pt"]));
+    Map<String, Map<String, dynamic>> sortedMap =
+        LinkedHashMap.fromEntries(entries);
+
+    return sortedMap;
+  }
+
+  Future<Map<String, Map<String, dynamic>>> getUsersInMatchList() async {
+    Map<String, Map<String, dynamic>> uids = await getUidsInMatchList();
+    Map<String, Map<String, dynamic>> data = {};
+
+    for (var entry in uids.entries) {
       String username = await getUsername(entry.key);
       data[username] = entry.value;
     }
 
-    List<MapEntry<String, int>> entries = data.entries.toList();
-    entries.sort((a, b) => b.value.compareTo(a.value));
-    Map<String, int> sortedMap = LinkedHashMap.fromEntries(entries);
-
-    return sortedMap;
+    return data;
   }
 
   Stream<DocumentSnapshot> getMatchSnapshots() async* {
     String matchCode = await getMatchCode();
     yield* instance.collection("matches").doc(matchCode).snapshots();
+  }
+
+  Future<DocumentSnapshot> getMatchData() async {
+    String matchCode = await getMatchCode();
+    return instance.collection("matches").doc(matchCode).get();
+  }
+
+  Future<DocumentSnapshot> getUserData() async {
+    return instance.collection("users").doc(user?.uid).get();
+  }
+
+  Future<bool> isAdmin() async {
+    return (await getUserData())["admin"];
   }
 }
