@@ -17,42 +17,56 @@ class _RankingPageState extends State<RankingPage> {
     List<Widget> texts = [];
     int pos = 1;
     data.forEach((key, value) {
-      texts.add(CustomButton(
-        onPressed: () {},
-        color: Theme.of(context).colorScheme.onInverseSurface,
-        child: Table(
-          columnWidths: const {1: FlexColumnWidth(3)},
-          //border: TableBorder.all(color: Colors.white),
-          children: [
-            TableRow(
-              children: [
-                Text("$pos°",
-                    textAlign: TextAlign.center,
+      if (value['squad'].length == 4) {
+        texts.add(CustomButton(
+          onPressed: () {},
+          color: Theme
+              .of(context)
+              .colorScheme
+              .onInverseSurface,
+          child: Table(
+            columnWidths: const {1: FlexColumnWidth(3)},
+            //border: TableBorder.all(color: Colors.white),
+            children: [
+              TableRow(
+                children: [
+                  Text("$pos°",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Theme
+                              .of(context)
+                              .colorScheme
+                              .onSurface)),
+                  Text(
+                    value['username'],
                     style: TextStyle(
                         fontSize: 16,
-                        color: Theme.of(context).colorScheme.onSurface)),
-                Text(
-                  key,
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface),
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-                Text("${value['pt']} pt",
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .onSurface),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.onSurface)),
-                const Icon(Icons.arrow_forward_ios)
-              ],
-            ),
-          ],
-        ),
-      ));
-      texts.add(const SizedBox(height: 10));
-      pos += 1;
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  Text("${database.getPoints(data, key)} pt",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Theme
+                              .of(context)
+                              .colorScheme
+                              .onSurface)),
+                  const Icon(Icons.arrow_forward_ios)
+                ],
+              ),
+            ],
+          ),
+        ));
+        texts.add(const SizedBox(height: 10));
+        pos += 1;
+      }
     });
     return texts;
   }

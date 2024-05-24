@@ -80,7 +80,18 @@ class Database {
     DocumentSnapshot match = await getMatchData();
     String matchCode = await getMatchCode();
     Map<String, dynamic> users = match['users'];
-    users[user!.uid] = {"pt": 0, "squad": squad};
+    users[user!.uid]["squad"] = squad;
+    await instance
+        .collection("matches")
+        .doc(matchCode)
+        .update({"users": users});
+  }
+
+  Future<void> setPrice(String uid, int newPrice) async {
+    DocumentSnapshot match = await getMatchData();
+    String matchCode = await getMatchCode();
+    Map<String, dynamic> users = match['users'];
+    users[uid]['price'] = newPrice;
     await instance
         .collection("matches")
         .doc(matchCode)
@@ -102,6 +113,16 @@ class Database {
     });
   }
 
+  Stream<bool> getSquadStream() async* {
+    String matchCode = await getMatchCode();
+    yield* instance.collection("matches").doc(matchCode).snapshots().map((snapshot) {
+      if (snapshot.exists && snapshot.data()?["users"][user?.uid]["squad"].length == 4) {
+        return true;
+      }
+      return false;
+    });
+  }
+
   Future<String> getUsername(String uid) async {
     DocumentSnapshot user = await instance.collection("users").doc(uid).get();
     return user["name"];
@@ -112,6 +133,15 @@ class Database {
     return userDetails["match"];
   }
 
+  int getPoints(Map<String, Map<String, dynamic>> data, String uid) {
+    int result = 0;
+    List squad = data[uid]?["squad"];
+    for (String player in squad) {
+      result += data[player]?["pt"] as int;
+    }
+    return result;
+  }
+
   Future<Map<String, Map<String, dynamic>>> getUidsInMatchList() async {
     DocumentSnapshot match = await getMatchData();
     Map<String, Map<String, dynamic>> data = {};
@@ -120,7 +150,7 @@ class Database {
     }
     List<MapEntry<String, Map<String, dynamic>>> entries =
         data.entries.toList();
-    entries.sort((a, b) => b.value["pt"].compareTo(a.value["pt"]));
+    entries.sort((a, b) => getPoints(data, b.key).compareTo(getPoints(data, a.key)));
     Map<String, Map<String, dynamic>> sortedMap =
         LinkedHashMap.fromEntries(entries);
 
@@ -128,12 +158,11 @@ class Database {
   }
 
   Future<Map<String, Map<String, dynamic>>> getUsersInMatchList() async {
-    Map<String, Map<String, dynamic>> uids = await getUidsInMatchList();
-    Map<String, Map<String, dynamic>> data = {};
+    Map<String, Map<String, dynamic>> data = await getUidsInMatchList();
 
-    for (var entry in uids.entries) {
+    for (var entry in data.entries) {
       String username = await getUsername(entry.key);
-      data[username] = entry.value;
+      data[entry.key]?["username"] = username;
     }
 
     return data;

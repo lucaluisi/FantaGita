@@ -16,17 +16,17 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildWidgetList(Map<String, Map<String, dynamic>> data) {
     int endKey = 0;
-    Map<String, int> subMap = {};
+    List<String> subMap = [];
     data.forEach((key, value) {
       if (endKey < 5) {
-        subMap[key] = value['pt'];
+        subMap.add(key);
         endKey++;
       }
     });
 
     List<TableRow> texts = [];
     int pos = 1;
-    subMap.forEach((key, value) {
+    for (var key in subMap) {
       texts.add(TableRow(
         children: [
           Text("$pos°",
@@ -35,14 +35,14 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 16,
                   color: Theme.of(context).colorScheme.onSurface)),
           Text(
-            key,
+            data[key]?['username'],
             style: TextStyle(
                 fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
-          Text("$value pt",
+          Text("${database.getPoints(data, key)} pt",
               textAlign: TextAlign.end,
               style: TextStyle(
                   fontSize: 16,
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ));
       pos += 1;
-    });
+    }
     texts.add(TableRow(children: [
       const SizedBox(),
       Text("...",

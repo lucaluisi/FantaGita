@@ -1,6 +1,7 @@
-import 'dart:async';
 import 'package:fantagita/custom%20components/button.dart';
 import 'package:flutter/material.dart';
+
+import '../services/button_stream.dart';
 
 class RegulationPage extends StatefulWidget {
   const RegulationPage({super.key});
@@ -39,7 +40,7 @@ class _RegulationPageState extends State<RegulationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final buttonStream = ButtonStream();
+    final buttonStream = CustomStreamController();
 
     return Scaffold(
       body: SafeArea(
@@ -172,19 +173,5 @@ class _RegulationPageState extends State<RegulationPage> {
         ),
       ),
     );
-  }
-}
-
-class ButtonStream {
-  final _controller = StreamController<int>.broadcast();
-
-  Stream<int> get stream => _controller.stream;
-
-  void buttonPressed(int buttonId) {
-    _controller.sink.add(buttonId);
-  }
-
-  void dispose() {
-    _controller.close();
   }
 }

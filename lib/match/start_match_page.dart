@@ -1,8 +1,6 @@
 import 'package:fantagita/custom%20components/button.dart';
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
 
-import '../custom components/container_card.dart';
 import '../services/database_service.dart';
 
 class StartMatchPage extends StatefulWidget {
@@ -35,28 +33,6 @@ class _StartMatchPageState extends State<StartMatchPage> {
           ),
         ),
         const SizedBox(height: 50),
-        CustomContainerCard(
-          color: Theme.of(context).colorScheme.onInverseSurface,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Non puoi giocare da solo!\nManda il codice a qualcuno",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              ),
-              CustomButton(
-                  onPressed: () async {
-                    Share.share(await Database().getMatchCode());
-                  },
-                  color: Theme.of(context).colorScheme.surface,
-                  child: const Icon(Icons.share_outlined))
-            ],
-          ),
-        ),
-        const SizedBox(height: 30),
         OutlinedButton(
           onPressed: () {
               widget.changePage(1);
@@ -66,7 +42,7 @@ class _StartMatchPageState extends State<StartMatchPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Studenti partecipanti        ",
+                "Squadre        ",
                 style: TextStyle(color: Colors.white),
               ),
               Icon(

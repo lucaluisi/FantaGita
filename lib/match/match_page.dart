@@ -1,5 +1,6 @@
 import 'package:fantagita/match/home_page.dart';
 import 'package:fantagita/match/start_match_page.dart';
+import 'package:fantagita/match/start_squad_choose_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -23,22 +24,40 @@ class _MatchPageState extends State<MatchPage> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: ListView(children: [
+          child: ListView(shrinkWrap: true, children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: StreamBuilder<Object>(
                   stream: database.isStarted(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data == 1) {
-                      return const ChooseSquadPage();
-                    } else if (snapshot.hasData && snapshot.data == 2) {
-                      return const HomePage();
-                    }
+                  builder: (context, isStarted) {
                     return FutureBuilder(
                         future: database.isAdmin(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data == true) {
-                            return StartMatchPage(
+                        builder: (context, isAdmin) {
+                          if (isStarted.hasData && isStarted.data == 1) {
+                            if (isAdmin.hasData && isAdmin.data == true) {
+                              return StartMatchPage(
+                                  changePage: widget.changePage);
+                            }
+                            return StreamBuilder<Object>(
+                                stream: database.getSquadStream(),
+                                builder: (context, chooseSquadSnapshot) {
+                                  if (chooseSquadSnapshot.hasData &&
+                                      chooseSquadSnapshot.data == true) {
+                                    return const Text(
+                                      "Attendi che l'admin avvii la partita...",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                      textAlign: TextAlign.center,
+                                    );
+                                  }
+                                  return const ChooseSquadPage();
+                                });
+                          } else if (isStarted.hasData && isStarted.data == 2) {
+                            return const HomePage();
+                          }
+
+                          if (isAdmin.hasData && isAdmin.data == true) {
+                            return StartSquadChoosePage(
                                 changePage: widget.changePage);
                           }
                           return const Text(
